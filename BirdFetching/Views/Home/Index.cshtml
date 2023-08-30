@@ -2,7 +2,16 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex flex-column align-items-center justify-content-center vh-100 py-3 px-4">
+    <div class="bg-white shadow rounded p-4 mw-100">
+        <h3 class="text-center font-weight-bold">
+            Welcome to Bird Generator!
+        </h3>
+        <p class="text-center">
+            This is a fun and educational tool that allows you to generate bird species along with interesting facts about them. Click the button below, generate a bird, and let the adventure begin! Happy birding!
+        </p>
+    </div>
+    <a href="/Birds/GenerateBird" class="btn btn-primary mt-4">
+        Generate Bird
+    </a>
 </div>

@@ -55,7 +55,7 @@ namespace BirdFetching.Controllers
         }
         
         // Get random bird
-        public async Task<IActionResult> RandomBird() 
+        public async Task<IActionResult> GenerateBird() 
         {
             Console.WriteLine("Entered RandomBird action.");
             string apiUrl = $"{_apiBaseUrl}/birds/generate";
