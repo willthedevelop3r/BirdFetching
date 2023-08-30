@@ -3,13 +3,14 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BirdFetching.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace BirdFetching.Controllers
 {   
     public class BirdsController : Controller
     {
         private readonly HttpClient _httpClient;
-        private readonly string _apiBaseUrl;
+        private readonly string? _apiBaseUrl;
 
         public BirdsController(IConfiguration configuration)
         {
@@ -21,6 +22,12 @@ namespace BirdFetching.Controllers
         public async Task<IActionResult> AllBirds()
         {
             Console.WriteLine("Entered AllBirds action.");
+
+            if (string.IsNullOrWhiteSpace(_apiBaseUrl))
+            {
+                return View("Error");
+            }
+
             string apiUrl = $"{_apiBaseUrl}/birds";
 
             try
@@ -58,6 +65,12 @@ namespace BirdFetching.Controllers
         public async Task<IActionResult> GenerateBird() 
         {
             Console.WriteLine("Entered RandomBird action.");
+
+            if (string.IsNullOrWhiteSpace(_apiBaseUrl))
+            {
+                return View("Error");
+            }
+
             string apiUrl = $"{_apiBaseUrl}/birds/generate";
 
            try 
