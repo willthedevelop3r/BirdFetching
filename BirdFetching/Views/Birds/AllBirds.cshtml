@@ -1,0 +1,33 @@
+﻿@model IEnumerable<BirdFetching.Models.BirdModel>
+
+@{
+    ViewData["Title"] = "All Birds";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            @* <th>Image</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bird in Model)
+        {
+            <tr>
+                <td>@bird.Id</td>
+                <td>@bird.Name</td>
+                <td>@bird.Description</td>
+                @* <td>
+                    <img src="@bird.ImageUrl" alt="@bird.Name" width="150" />
+                </td> *@
+            </tr>
+        }
+
+    </tbody>
+</table>
+
