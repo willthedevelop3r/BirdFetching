@@ -72,7 +72,6 @@ namespace BirdFetching.Controllers
                 {
                     var jsonResponse = await response.Content.ReadAsStringAsync();
 
-
                     var birdData = JsonSerializer.Deserialize<SingleBirdResponse>(jsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 
@@ -108,7 +107,11 @@ namespace BirdFetching.Controllers
                 if (allBirdsResponse.IsSuccessStatusCode) 
                 {
                     var allBirdsJsonResponse = await allBirdsResponse.Content.ReadAsStringAsync();
+
                     var allBirdsData = JsonSerializer.Deserialize<BirdApiResponse>(allBirdsJsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    Console.WriteLine($"All Bird Response: {allBirdsJsonResponse}");
+
                     allBirds = allBirdsData?.Data;
                 }
 
@@ -116,7 +119,11 @@ namespace BirdFetching.Controllers
                 if (randomBirdResponse.IsSuccessStatusCode) 
                 {
                     var randomBirdJsonResponse = await randomBirdResponse.Content.ReadAsStringAsync();
+
                     var randomBirdData = JsonSerializer.Deserialize<SingleBirdResponse>(randomBirdJsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    Console.WriteLine($"Random Bird Response: {randomBirdJsonResponse}");
+
                     randomBird = randomBirdData?.Data;
                 }
 
@@ -130,9 +137,9 @@ namespace BirdFetching.Controllers
                     AllBirds = allBirds,
                     RandomBird = randomBird
                 };
+
                 return View("AllBirdsAndRandom", combineModel);
             }
-
 
             catch (HttpRequestException ex) 
             {
