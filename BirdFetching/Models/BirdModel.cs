@@ -21,12 +21,20 @@ namespace BirdFetching.Models
     public class BirdApiResponse 
     {
         [JsonPropertyName("data")]
-        public List<BirdModel> Data { get; set; }
+        public List<BirdModel>? Data { get; set; }
     }
 
     public class SingleBirdResponse
     {
         [JsonPropertyName("data")]
-        public BirdModel Data { get; set; }
+        public BirdModel? Data { get; set; }
+    }
+
+    // Combined pages
+    public class CombinedBirdsModel
+    {
+        public IEnumerable<BirdModel>? AllBirds { get; set; }
+        public BirdModel? RandomBird { get; set; }
     }
 }
+

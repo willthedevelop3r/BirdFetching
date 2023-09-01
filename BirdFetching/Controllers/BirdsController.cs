@@ -6,7 +6,7 @@ using BirdFetching.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace BirdFetching.Controllers
-{   
+{
     public class BirdsController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -21,7 +21,6 @@ namespace BirdFetching.Controllers
         // Get all birds
         public async Task<IActionResult> AllBirds()
         {
-            Console.WriteLine("Entered AllBirds action.");
 
             if (string.IsNullOrWhiteSpace(_apiBaseUrl))
             {
@@ -32,27 +31,20 @@ namespace BirdFetching.Controllers
 
             try
             {
-                Console.WriteLine("Making HTTP GET request to fetch all birds.");
-                var response = await _httpClient.GetAsync(apiUrl);
 
+                var response = await _httpClient.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonResponse = await response.Content.ReadAsStringAsync();
 
-                    Console.WriteLine($"Received birds data: {jsonResponse}"); // Log raw JSON response here
-
                     var birdsData = JsonSerializer.Deserialize<BirdApiResponse>(jsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                    Console.WriteLine($"Birds data parsed?: {birdsData}");
-
-                    Console.WriteLine("Successfully parsed birds data.");
 
                     return View(birdsData?.Data);
                 }
 
             }
 
-            catch (HttpRequestException ex) 
+            catch (HttpRequestException ex)
             {
                 Console.WriteLine($"Request error: {ex.Message}");
                 return View("Error");
@@ -60,11 +52,10 @@ namespace BirdFetching.Controllers
 
             return View("Error");
         }
-        
+
         // Get random bird
-        public async Task<IActionResult> GenerateBird() 
+        public async Task<IActionResult> GenerateBird()
         {
-            Console.WriteLine("Entered RandomBird action.");
 
             if (string.IsNullOrWhiteSpace(_apiBaseUrl))
             {
@@ -73,34 +64,82 @@ namespace BirdFetching.Controllers
 
             string apiUrl = $"{_apiBaseUrl}/birds/generate";
 
-           try 
-           {
-                Console.WriteLine("Making HTTP GET request to fetch random bird.");
-                var response = await _httpClient.GetAsync(apiUrl);
+            try
+            {
 
+                var response = await _httpClient.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonResponse = await response.Content.ReadAsStringAsync();
 
-                    Console.WriteLine($"Received bird data: {jsonResponse}"); // Log raw JSON response here
 
                     var birdData = JsonSerializer.Deserialize<SingleBirdResponse>(jsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                    Console.WriteLine($"Birds data parsed?: {birdData}");
-
-                    Console.WriteLine("Successfully parsed random bird data.");
 
                     return View(birdData?.Data);
                 }
-           }
+            }
 
-           catch (HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 Console.WriteLine($"Request error: {ex.Message}");
                 return View("Error");
             }
 
             return View("Error");
+        }
+
+        public async Task<IActionResult> AllBirdsAndRandom()
+        {
+            if (string.IsNullOrWhiteSpace(_apiBaseUrl))
+            {
+                return View("Error");
+            }
+
+            string allBirdsApiUrl = $"{_apiBaseUrl}/birds";
+            string randomBirdApiUrl = $"{_apiBaseUrl}/birds/generate";
+
+            IEnumerable<BirdModel>? allBirds = null;
+            BirdModel? randomBird = null;
+
+            try 
+            {
+                var allBirdsResponse = await _httpClient.GetAsync(allBirdsApiUrl);
+                if (allBirdsResponse.IsSuccessStatusCode) 
+                {
+                    var allBirdsJsonResponse = await allBirdsResponse.Content.ReadAsStringAsync();
+                    var allBirdsData = JsonSerializer.Deserialize<BirdApiResponse>(allBirdsJsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    allBirds = allBirdsData?.Data;
+                }
+
+                var randomBirdResponse = await _httpClient.GetAsync(randomBirdApiUrl);
+                if (randomBirdResponse.IsSuccessStatusCode) 
+                {
+                    var randomBirdJsonResponse = await randomBirdResponse.Content.ReadAsStringAsync();
+                    var randomBirdData = JsonSerializer.Deserialize<SingleBirdResponse>(randomBirdJsonResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    randomBird = randomBirdData?.Data;
+                }
+
+                if (allBirds == null || randomBird == null)
+                {
+                    return View("Error");
+                }
+
+                CombinedBirdsModel combineModel = new CombinedBirdsModel
+                {
+                    AllBirds = allBirds,
+                    RandomBird = randomBird
+                };
+                return View("AllBirdsAndRandom", combineModel);
+            }
+
+
+            catch (HttpRequestException ex) 
+            {
+                Console.Write(ex.Message);
+                return View("Error");
+            }
+
         }
     }
 }

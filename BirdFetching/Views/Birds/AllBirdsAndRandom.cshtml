@@ -1,0 +1,55 @@
+﻿@model BirdFetching.Models.CombinedBirdsModel
+
+@{
+    ViewData["Title"] = "All Birds & Random Bird";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h2>All Birds</h2>
+@if (Model.AllBirds != null && Model.AllBirds.Any())
+{
+    
+    <table class="table table-bordered">
+         <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+             @* <th>Image</th> *@
+            </tr>
+        </thead>
+        <tbody>
+           @foreach (var bird in Model.AllBirds)
+           {
+                <tr>
+                  <td>@bird.Id</td>
+                  <td>@bird.Name</td>
+                  <td>@bird.Description</td>
+               @* <td>
+                    <img src="@bird.ImageUrl" alt="@bird.Name" width="150" />
+                  </td> *@
+              </tr>
+           }
+        
+        </tbody>
+    </table>
+}
+
+else
+{
+    <p>No bird data available.</p>
+}
+
+<h2>Random Bird</h2>
+@if (Model.RandomBird != null)
+{
+    <p><strong>Id:</strong> @Model.RandomBird.Id</p>
+    <p><strong>Name:</strong> @Model.RandomBird.Name</p>
+    <p><strong>Description:</strong> @Model.RandomBird.Description</p>
+    @* <p><img src="@Model.RandomBird.ImageUrl" alt="@Model.RandomBird.Name" width="150" /></p> *@
+}
+else
+{
+    <p>No random bird data available.</p>
+}
