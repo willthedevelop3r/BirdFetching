@@ -30,7 +30,7 @@ namespace BirdFetching.Models
         public BirdModel? Data { get; set; }
     }
 
-    // Combined pages
+    // Combined Model
     public class CombinedBirdsModel
     {
         public IEnumerable<BirdModel>? AllBirds { get; set; }

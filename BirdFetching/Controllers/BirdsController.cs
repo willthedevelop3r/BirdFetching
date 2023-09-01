@@ -88,6 +88,7 @@ namespace BirdFetching.Controllers
             return View("Error");
         }
 
+        // Get all birds and random bird
         public async Task<IActionResult> AllBirdsAndRandom()
         {
             if (string.IsNullOrWhiteSpace(_apiBaseUrl))
